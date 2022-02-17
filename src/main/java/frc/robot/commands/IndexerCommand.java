@@ -8,37 +8,36 @@ import frc.robot.subsystems.IndexerSubsystem;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-public class IndexerCommand extends CommandBase{
+public class IndexerCommand extends CommandBase {
     private final IndexerSubsystem m_subsystem;
 
-    public static Command teleIndex(IndexerSubsystem subsystem){
+    public static Command teleIndex(IndexerSubsystem subsystem) {
         return new IndexerCommand(subsystem).withTimeout(.2);
     }
-    public IndexerCommand(IndexerSubsystem subsystem){
+
+    public IndexerCommand(IndexerSubsystem subsystem) {
         m_subsystem = subsystem;
-        
+
         addRequirements(m_subsystem);
     }
 
     @Override
-    public void initialize()
-    {
+    public void initialize() {
         m_subsystem.run(VictorSPXControlMode.PercentOutput, 0.5);
     }
 
     @Override
-    public void execute(){}
+    public void execute() {
+    }
 
     @Override
-    public void end(boolean interrupted)
-    {
+    public void end(boolean interrupted) {
         m_subsystem.run(VictorSPXControlMode.PercentOutput, 0);
     }
 
     @Override
-    public boolean isFinished()
-    {
+    public boolean isFinished() {
         return false;
     }
-    
+
 }
