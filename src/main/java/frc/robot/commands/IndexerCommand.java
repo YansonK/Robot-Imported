@@ -15,21 +15,25 @@ public class IndexerCommand extends CommandBase{
         addRequirements(m_subsystem);
     }
 
-    
-    public void initialize()
-    {
-
-    }
-
     @Override
-    public void execute()
+    public void initialize()
     {
         m_subsystem.run(VictorSPXControlMode.PercentOutput, 0.5);
     }
 
-    public void end()
-    {
+    @Override
+    public void execute(){}
 
+    @Override
+    public void end(boolean interrupted)
+    {
+        m_subsystem.run(VictorSPXControlMode.PercentOutput, 0);
+    }
+
+    @Override
+    public boolean isFinished()
+    {
+        return false;
     }
     
 }
