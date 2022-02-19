@@ -32,6 +32,7 @@ public final class Constants {
 
     public static class CONTROLLER {
         public static final Joystick JOYSTICK = new Joystick(0);
+
     }
 
     public static class DIO {

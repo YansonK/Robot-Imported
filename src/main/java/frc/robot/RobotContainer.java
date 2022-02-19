@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.IndexerCommand;
 import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.commands.DriveTrainCommand;
+
 import frc.robot.Constants.CONTROLLER;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -24,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final IndexerSubsystem indexerSubsystem = new IndexerSubsystem();
+  private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
 
   // private final IndexerCommand indexerCommand = new
   // IndexerCommand(indexerSubsystem);
@@ -45,6 +49,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     JoystickButton indexerButton = new JoystickButton(CONTROLLER.JOYSTICK, 1);
     indexerButton.whileActiveContinuous(IndexerCommand.teleIndex(indexerSubsystem), true);
+
+    JoystickButton driveButton = new JoystickButton(CONTROLLER.JOYSTICK, 2);
+    driveButton.whileActiveContinuous(DriveTrainCommand.teleDrive(driveTrainSubsystem, 0.1), true);
   }
 
   /**
