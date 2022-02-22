@@ -9,7 +9,7 @@ public class DriveTrainCommand extends CommandBase {
     private double m_power;
 
     public static Command teleDrive(DriveTrainSubsystem subsystem, double power) {
-        return new DriveTrainCommand(subsystem, power).withTimeout(.2);
+        return new DriveTrainCommand(subsystem, power).withTimeout(0.02);
     }
 
     public DriveTrainCommand(DriveTrainSubsystem subsystem, double power) {
@@ -34,6 +34,7 @@ public class DriveTrainCommand extends CommandBase {
 
     }
 
+    @Override
     public boolean isFinished() {
         return false;
     }
