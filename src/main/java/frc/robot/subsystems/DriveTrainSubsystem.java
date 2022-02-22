@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import frc.robot.commands.DriveTrainCommand;
 
 import frc.robot.Constants;
 import jdk.jfr.Percentage;
@@ -55,6 +56,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
     // DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
     // }
 
+    @Override
+    public void periodic() {
+        
+    }
+
     public DriveTrainSubsystem() {
 
     }
@@ -73,6 +79,17 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     public static void arcadeDrive() {
 
+    }
+
+    public void MotorSafetyHelper() {
+        leftFront.setSafetyEnabled(false);
+        leftBack.setSafetyEnabled(false);
+        rightBack.setSafetyEnabled(false);
+        rightFront.setSafetyEnabled(false);
+    }
+
+    public void initDefaultCommand(){
+        setDefaultCommand(DriveTrainCommand(, 0.0));
     }
 
 }
