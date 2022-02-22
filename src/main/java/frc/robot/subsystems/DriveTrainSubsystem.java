@@ -88,8 +88,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
         rightFront.setSafetyEnabled(false);
     }
 
-    public void initDefaultCommand(){
-        setDefaultCommand(DriveTrainCommand(, 0.0));
+    public void initDefaultCommand() {
+        setDefaultCommand(DriveTrainCommand(0.0));
     }
 
 }

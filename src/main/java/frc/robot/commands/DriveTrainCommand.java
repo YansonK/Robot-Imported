@@ -5,15 +5,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class DriveTrainCommand extends CommandBase {
-    private final DriveTrainSubsystem m_subsystem;
-    private double m_power;
+    public final DriveTrainSubsystem m_subsystem = new DriveTrainSubsystem();
+    public double m_power;
 
     public static Command teleDrive(DriveTrainSubsystem subsystem, double power) {
-        return new DriveTrainCommand(subsystem, power).withTimeout(0.02);
+        return new DriveTrainCommand(power).withTimeout(0.02);
     }
 
-    public DriveTrainCommand(DriveTrainSubsystem subsystem, double power) {
-        m_subsystem = subsystem;
+    public DriveTrainCommand(double power) {
         m_power = power;
         addRequirements(m_subsystem);
     }
