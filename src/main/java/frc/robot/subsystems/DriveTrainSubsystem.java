@@ -64,6 +64,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
         m_drive.tankDrive(power, power);
     }
 
+    public static void stop() {
+        // WPI_TalonSRX leftFront.set(ControlMode.PercentOutput, power);
+
+        m_drive.stopMotor();
+    }
+
     public static void arcadeDrive() {
 
     }
