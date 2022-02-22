@@ -20,7 +20,7 @@ public class DriveTrainCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        
+
     }
 
     @Override
