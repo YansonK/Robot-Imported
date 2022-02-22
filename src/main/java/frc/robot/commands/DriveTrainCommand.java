@@ -20,17 +20,17 @@ public class DriveTrainCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        DriveTrainSubsystem.driveStraight(m_power);
+        
     }
 
     @Override
     public void execute() {
-
+        DriveTrainSubsystem.driveStraight(m_power);
     }
 
     @Override
     public void end(boolean interrupted) {
-        DriveTrainSubsystem.driveStraight(0);
+        DriveTrainSubsystem.stop();
 
     }
 
