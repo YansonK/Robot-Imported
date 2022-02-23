@@ -52,10 +52,10 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    leftFront.feed();
-    rightFront.feed();
-    leftBack.feed();
-    rightBack.feed();
+    // leftFront.feed();
+    // rightFront.feed();
+    // leftBack.feed();
+    // rightBack.feed();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

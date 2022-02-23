@@ -9,7 +9,7 @@ public class DriveTrainCommand extends CommandBase {
     public double m_power;
 
     public static Command teleDrive(double power) {
-        return new DriveTrainCommand(power).withTimeout(0.02);
+        return new DriveTrainCommand(power).withTimeout(0.2);
     }
 
     public DriveTrainCommand(double power) {

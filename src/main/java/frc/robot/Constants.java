@@ -23,10 +23,10 @@ public final class Constants {
 
         public static final int INDEXER = 10; // Port for indexer motor
 
-        public static final int DRIVE_RB = 0; // right back motor controller
-        public static final int DRIVE_RF = 1; // right front motor controller
-        public static final int DRIVE_LB = 2; // left back motor controller
-        public static final int DRIVE_LF = 3; // left front motor controller
+        public static final int DRIVE_VICTOR_R = 3; // right back motor controller Victor //RB Port 2 Victor
+        public static final int DRIVE_TALON_R = 1; // right front motor controller Talon
+        public static final int DRIVE_VICTOR_L = 2; // left back motor controller Victor //LB Port 3 victor
+        public static final int DRIVE_TALON_L = 0; // left front motor controller Talon
 
     }
 
