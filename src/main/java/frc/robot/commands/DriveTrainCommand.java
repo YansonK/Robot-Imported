@@ -8,7 +8,7 @@ public class DriveTrainCommand extends CommandBase {
     public final DriveTrainSubsystem m_subsystem = new DriveTrainSubsystem();
     public double m_power;
 
-    public static Command teleDrive(DriveTrainSubsystem subsystem, double power) {
+    public static Command teleDrive(double power) {
         return new DriveTrainCommand(power).withTimeout(0.02);
     }
 
@@ -19,12 +19,12 @@ public class DriveTrainCommand extends CommandBase {
 
     @Override
     public void initialize() {
-
+        DriveTrainSubsystem.driveStraight(m_power);
     }
 
     @Override
     public void execute() {
-        DriveTrainSubsystem.driveStraight(m_power);
+
     }
 
     @Override

@@ -51,7 +51,7 @@ public class RobotContainer {
     indexerButton.whileActiveContinuous(IndexerCommand.teleIndex(indexerSubsystem), true);
 
     JoystickButton driveButton = new JoystickButton(CONTROLLER.JOYSTICK, 2);
-    driveButton.whileActiveContinuous(DriveTrainCommand.teleDrive(driveTrainSubsystem, 0.1), true);
+    driveButton.whileActiveContinuous(DriveTrainCommand.teleDrive(0.1), true);
   }
 
   /**

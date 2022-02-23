@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
@@ -9,9 +10,12 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.MotorSafety;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -31,6 +35,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     private static final WPI_TalonSRX leftBack = new WPI_TalonSRX(CAN.DRIVE_LB);
     private static final WPI_TalonSRX rightBack = new WPI_TalonSRX(CAN.DRIVE_RB);
 
+    private static final VictorSPX 
+
+
+
     // grouping the motor controllers
     private static MotorControllerGroup leftControllers = new MotorControllerGroup(leftFront, leftBack);
     private static MotorControllerGroup rightControllers = new MotorControllerGroup(rightFront, rightBack);
@@ -39,8 +47,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     private static DifferentialDrive m_drive = new DifferentialDrive(leftControllers, rightControllers);
 
     // encoders
-    private final Encoder leftEncoder = new Encoder(DIO.DRIVE_ENCODER_LEFT_A, DIO.DRIVE_ENCODER_LEFT_B);
-    private final Encoder rightEncoder = new Encoder(DIO.DRIVE_ENCODER_RIGHT_A, DIO.DRIVE_ENCODER_RIGHT_B);
+    // private final Encoder leftEncoder = new Encoder(DIO.DRIVE_ENCODER_LEFT_A,
+    // DIO.DRIVE_ENCODER_LEFT_B);
+    // private final Encoder rightEncoder = new Encoder(DIO.DRIVE_ENCODER_RIGHT_A,
+    // DIO.DRIVE_ENCODER_RIGHT_B);
 
     // public class Robot {
     // MotorController m_frontLeft = new PWMVictorSPX(1);
@@ -56,13 +66,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
     // DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
     // }
 
-    @Override
-    public void periodic() {
+    public DriveTrainSubsystem() {
 
     }
 
-    public DriveTrainSubsystem() {
-
+    public void periodic() {
+        
     }
 
     public static void driveStraight(double power) {
@@ -89,7 +98,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(DriveTrainCommand(0.0));
+        setDefaultCommand(DriveTrainCommand.teleDrive(0.0));
     }
 
 }
