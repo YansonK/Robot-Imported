@@ -28,6 +28,7 @@ import frc.robot.Constants;
 import jdk.jfr.Percentage;
 
 import static frc.robot.Constants.*;
+import edu.wpi.first.wpilibj.Joystick;
 
 public class DriveTrainSubsystem extends SubsystemBase {
 
@@ -37,6 +38,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     private static final VictorSPX leftVictor = new VictorSPX(CAN.DRIVE_VICTOR_L);
     private static final VictorSPX rightVictor = new VictorSPX(CAN.DRIVE_VICTOR_R);
+
+    private static boolean slow = false;
 
     // private static final WPI_TalonSRX rightFront = new
     // WPI_TalonSRX(CAN.DRIVE_RF);
@@ -73,10 +76,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     // }
 
     public DriveTrainSubsystem() {
-        // leftFront.follow((IMotorController) leftBack);
-        // rightFront.follow((IMotorController) rightBack);
+        // leftVictor.follow((IMotorController) leftTalon);
+        // rightVictor.follow((IMotorController) rightTalon);
         // leftFront.setInverted(true);
-        rightVictor.setInverted(true);
+        // rightVictor.setInverted(true);
         // leftVictor.setInverted(true);
     }
 
@@ -89,10 +92,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
         // m_drive.tankDrive(power, power);
 
-        // leftFront.set(speed);
-        // rightFront.set(speed);
-        leftVictor.set(ControlMode.PercentOutput, speed);
-        rightVictor.set(ControlMode.PercentOutput, speed + 0.01);
+        leftTalon.set(speed);
+        rightTalon.set(speed);
+        // leftVictor.set(ControlMode.PercentOutput, speed);
+        // rightVictor.set(ControlMode.PercentOutput, speed + 0.01);
     }
 
     public static void stop() {
@@ -107,7 +110,26 @@ public class DriveTrainSubsystem extends SubsystemBase {
     }
 
     public static void arcadeDrive() {
+        double yAxis = CONTROLLER.JOYSTICK.getY();
+        double rotAxis = CONTROLLER.JOYSTICK.getTwist();
 
+        double ySensitivity = slow ? 0.75 : 1.0;
+        double rotSensitivity = slow ? 0.2 : 0.4;
+
+        double speed = yAxis * ySensitivity;
+
+        double rotation = rotAxis * rotSensitivity;
+
+        double left, right;
+
+        if (speed >= 0.0) {
+            left = speed + rotation;
+            right = speed - rotation;
+
+        } else {
+            left = speed - rotation;
+            right = speed + rotation;
+        }
     }
 
     // public void MotorSafetyHelper() {
