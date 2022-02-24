@@ -102,10 +102,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
         // WPI_TalonSRX leftFront.set(ControlMode.PercentOutput, power);
 
         // m_drive.stopMotor();
-        // leftFront.set(0);
-        // rightFront.set(0);
-        leftVictor.set(ControlMode.PercentOutput, 0);
-        rightVictor.set(ControlMode.PercentOutput, 0);
+        leftTalon.set(0);
+        rightTalon.set(0);
+        // leftVictor.set(ControlMode.PercentOutput, 0);
+        // rightVictor.set(ControlMode.PercentOutput, 0);
 
     }
 
