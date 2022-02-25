@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.IndexerCommand;
+import frc.robot.commands.JoystickDriveCommand;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.commands.DriveTrainCommand;
@@ -38,7 +39,13 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    configureDefaults();
   }
+
+  private void configureDefaults() {
+    driveTrainSubsystem.setDefaultCommand(new JoystickDriveCommand(driveTrainSubsystem));
+ }
+
 
   /**
    * Use this method to define your button->command mappings. Buttons can be

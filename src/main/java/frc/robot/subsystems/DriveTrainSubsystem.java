@@ -80,20 +80,20 @@ public class DriveTrainSubsystem extends SubsystemBase {
         // rightVictor.follow((IMotorController) rightTalon);
         // leftFront.setInverted(true);
         // rightVictor.setInverted(true);
-        // leftVictor.setInverted(true);
+        leftTalon.setInverted(true);//inverts motor so it can drive straight
     }
 
     public void periodic() {
 
     }
 
-    public static void driveStraight(double speed) {
+    public static void tankDrive(double Lspeed, double Rspeed) {
         // WPI_TalonSRX leftFront.set(ControlMode.PercentOutput, power);
 
         // m_drive.tankDrive(power, power);
 
-        leftTalon.set(speed);
-        rightTalon.set(speed);
+        leftTalon.set(Lspeed);
+        rightTalon.set(Rspeed);
         // leftVictor.set(ControlMode.PercentOutput, speed);
         // rightVictor.set(ControlMode.PercentOutput, speed + 0.01);
     }
@@ -102,15 +102,15 @@ public class DriveTrainSubsystem extends SubsystemBase {
         // WPI_TalonSRX leftFront.set(ControlMode.PercentOutput, power);
 
         // m_drive.stopMotor();
-        // leftFront.set(0);
-        // rightFront.set(0);
-        leftVictor.set(ControlMode.PercentOutput, 0);
-        rightVictor.set(ControlMode.PercentOutput, 0);
+        leftTalon.set(0);
+        rightTalon.set(0);
+        // leftVictor.set(ControlMode.PercentOutput, 0);
+        // rightVictor.set(ControlMode.PercentOutput, 0);
 
     }
 
     public static void arcadeDrive() {
-        double yAxis = CONTROLLER.JOYSTICK.getY();
+        double yAxis = CONTROLLER.JOYSTICK.getY() * Constants.CONTROLLER.INVERT_Y;
         double rotAxis = CONTROLLER.JOYSTICK.getTwist();
 
         double ySensitivity = slow ? 0.75 : 1.0;
@@ -130,6 +130,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
             left = speed - rotation;
             right = speed + rotation;
         }
+
+        System.out.println(speed);
+        System.out.println(rotation);
+
+
+        tankDrive(left,right);
     }
 
     // public void MotorSafetyHelper() {

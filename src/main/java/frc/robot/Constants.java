@@ -31,7 +31,8 @@ public final class Constants {
     }
 
     public static class CONTROLLER {
-        public static final Joystick JOYSTICK = new Joystick(0);
+        public static final Joystick JOYSTICK = new Joystick(0);//
+        public static final int INVERT_Y = -1;// flip the Yaxis(Joystick is inherintly backward for some reason)
 
     }
 

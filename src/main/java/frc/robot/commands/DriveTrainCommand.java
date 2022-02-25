@@ -19,7 +19,7 @@ public class DriveTrainCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        DriveTrainSubsystem.driveStraight(m_power);
+        DriveTrainSubsystem.tankDrive(m_power,m_power);
     }
 
     @Override
