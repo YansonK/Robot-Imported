@@ -80,7 +80,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
         // rightVictor.follow((IMotorController) rightTalon);
         // leftFront.setInverted(true);
         // rightVictor.setInverted(true);
-        leftTalon.setInverted(true);//inverts motor so it can drive straight
+        leftTalon.setInverted(true);// inverts motor so it can drive straight
     }
 
     public void periodic() {
@@ -134,8 +134,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
         System.out.println(speed);
         System.out.println(rotation);
 
-
-        tankDrive(left,right);
+        tankDrive(left, right);
     }
 
     // public void MotorSafetyHelper() {
