@@ -28,6 +28,9 @@ import frc.robot.Constants;
 import jdk.jfr.Percentage;
 
 import static frc.robot.Constants.*;
+
+import javax.xml.transform.ErrorListener;
+
 import edu.wpi.first.wpilibj.Joystick;
 
 public class DriveTrainSubsystem extends SubsystemBase {
@@ -40,6 +43,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
     private static final VictorSPX rightVictor = new VictorSPX(CAN.DRIVE_VICTOR_R);
 
     private static boolean slow = false;
+
+    private static double integral, setpoint, previous_error, previous_integral = 0;
+    private static int P = 1;
+    private static int I = 1;
+    private static int D = 1;
+    public static double output;
 
     // private static final WPI_TalonSRX rightFront = new
     // WPI_TalonSRX(CAN.DRIVE_RF);
@@ -109,7 +118,25 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     }
 
-    public static void arcadeDrive() {
+    public void setSetPoint(int setpoint) {
+        this.setpoint = setpoint;
+    }
+
+    public static double PID() {
+        while (true) {
+            double error = setpoint - CONTROLLER.JOYSTICK.getTwist();
+            integral += previous_integral + error * .02;
+            double derivative = (error - previous_error) / 0.02;
+            output = P * error + I * integral + D * derivative;
+
+            previous_error = error;
+            previous_integral = integral;
+
+            return output;
+        }
+    }
+
+    public static void arcadeDrive(double output) {
         double yAxis = CONTROLLER.JOYSTICK.getY() * Constants.CONTROLLER.INVERT_Y;
         double rotAxis = CONTROLLER.JOYSTICK.getTwist();
 
