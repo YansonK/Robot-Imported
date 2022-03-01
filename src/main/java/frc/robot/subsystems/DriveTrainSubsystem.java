@@ -88,8 +88,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     // }
 
     public DriveTrainSubsystem() {
-        // leftVictor.follow((IMotorController) leftTalon);
-        // rightVictor.follow((IMotorController) rightTalon);
+        leftVictor.follow((IMotorController) leftTalon);
+        rightVictor.follow((IMotorController) rightTalon);
         // leftFront.setInverted(true);
         // rightVictor.setInverted(true);
         leftTalon.setInverted(true);// inverts motor so it can drive straight
@@ -168,6 +168,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
             right = speed + rotation;
         }
 
+        System.out.println("L" + left);
+        System.out.println("R" + right);
+        System.out.println("Rot:" + rotation);
+        System.out.println("-------------");
         speedTankDrive(left, right);
     }
 
