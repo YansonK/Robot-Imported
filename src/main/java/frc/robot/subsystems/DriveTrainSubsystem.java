@@ -36,7 +36,7 @@ import edu.wpi.first.wpilibj.Joystick;
 public class DriveTrainSubsystem extends SubsystemBase {
 
     // motor controllers
-    private static final MotorController leftTalon = new WPI_TalonSRX(CAN.DRIVE_TALON_L);
+    public static final MotorController leftTalon = new WPI_TalonSRX(CAN.DRIVE_TALON_L);
     private static final MotorController rightTalon = new WPI_TalonSRX(CAN.DRIVE_TALON_R);
 
     private static final VictorSPX leftVictor = new VictorSPX(CAN.DRIVE_VICTOR_L);
@@ -44,11 +44,18 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     private static boolean slow = false;
 
-    private static double integral, setpoint, previous_error, previous_integral = 0;
+    private static double integral;
+    public static double setpoint;
+    private static double previous_error;
+    private static double previous_integral = 0;
     private static int P = 1;
     private static int I = 1;
     private static int D = 1;
     public static double output;
+    public final static Encoder leftEncoder = new Encoder(DIO.DRIVE_ENCODER_LEFT_A, DIO.DRIVE_ENCODER_LEFT_B);
+    private final static Encoder rightEncoder = new Encoder(DIO.DRIVE_ENCODER_RIGHT_A, DIO.DRIVE_ENCODER_RIGHT_B);
+
+    public static PIDController pid = new PIDController(P, I, D);
 
     // private static final WPI_TalonSRX rightFront = new
     // WPI_TalonSRX(CAN.DRIVE_RF);
@@ -65,10 +72,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     // DifferentialDrive(leftControllers, rightControllers);
 
     // encoders
-    // private final Encoder leftEncoder = new Encoder(DIO.DRIVE_ENCODER_LEFT_A,
-    // DIO.DRIVE_ENCODER_LEFT_B);
-    // private final Encoder rightEncoder = new Encoder(DIO.DRIVE_ENCODER_RIGHT_A,
-    // DIO.DRIVE_ENCODER_RIGHT_B);
 
     // public class Robot {
     // MotorController m_frontLeft = new PWMVictorSPX(1);
@@ -90,21 +93,34 @@ public class DriveTrainSubsystem extends SubsystemBase {
         // leftFront.setInverted(true);
         // rightVictor.setInverted(true);
         leftTalon.setInverted(true);// inverts motor so it can drive straight
+
+        final double circumOfWheel = 2 * Math.PI * CAN.RADIUSOFWHEEL;
+        final double distPerTick = circumOfWheel / 360;
+
+        leftEncoder.setDistancePerPulse(distPerTick);
+        rightEncoder.setDistancePerPulse(distPerTick);
     }
 
     public void periodic() {
 
     }
 
-    public static void tankDrive(double Lspeed, double Rspeed) {
+    public static void distanceTankDrive(double Ldistance, double Rdistance) {
         // WPI_TalonSRX leftFront.set(ControlMode.PercentOutput, power);
 
         // m_drive.tankDrive(power, power);
-
-        leftTalon.set(Lspeed);
-        rightTalon.set(Rspeed);
+        // leftTalon.set(Lspeed);
+        // rightTalon.set(Rspeed);
         // leftVictor.set(ControlMode.PercentOutput, speed);
         // rightVictor.set(ControlMode.PercentOutput, speed + 0.01);
+
+        leftTalon.set(pid.calculate(leftEncoder.getDistance(), Ldistance));
+        rightTalon.set(pid.calculate(leftEncoder.getDistance(), Rdistance));
+    }
+
+    public static void speedTankDrive(double Lspeed, double Rspeed) {
+        leftTalon.set(Lspeed);
+        rightTalon.set(Rspeed);
     }
 
     public static void stop() {
@@ -118,11 +134,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     }
 
-    public void setSetPoint(int setpoint) {
-        this.setpoint = setpoint;
-    }
-
-    public static double PID() {
+    public static void PID() {
         while (true) {
             double error = setpoint - CONTROLLER.JOYSTICK.getTwist();
             integral += previous_integral + error * .02;
@@ -131,12 +143,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
             previous_error = error;
             previous_integral = integral;
-
-            return output;
         }
     }
 
-    public static void arcadeDrive(double output) {
+    public static void arcadeDrive() {
         double yAxis = CONTROLLER.JOYSTICK.getY() * Constants.CONTROLLER.INVERT_Y;
         double rotAxis = CONTROLLER.JOYSTICK.getTwist();
 
@@ -158,10 +168,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
             right = speed + rotation;
         }
 
-        System.out.println(speed);
-        System.out.println(rotation);
-
-        tankDrive(left, right);
+        speedTankDrive(left, right);
     }
 
     // public void MotorSafetyHelper() {

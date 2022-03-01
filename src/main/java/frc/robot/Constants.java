@@ -28,6 +28,8 @@ public final class Constants {
         public static final int DRIVE_VICTOR_L = 2; // left back motor controller Victor //LB Port 3 victor
         public static final int DRIVE_TALON_L = 0; // left front motor controller Talon
 
+        public static final double RADIUSOFWHEEL = 0.075; // meters
+
     }
 
     public static class CONTROLLER {

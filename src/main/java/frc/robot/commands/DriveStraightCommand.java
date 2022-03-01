@@ -4,27 +4,23 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class DriveTrainCommand extends CommandBase {
+public class DriveStraightCommand extends CommandBase {
     public final DriveTrainSubsystem m_subsystem = new DriveTrainSubsystem();
-    public double m_power;
+    public double m_distance;
 
-    public static Command teleDrive(double power) {
-        return new DriveTrainCommand(power).withTimeout(0.2);
-    }
-
-    public DriveTrainCommand(double power) {
-        m_power = power;
+    public DriveStraightCommand(double distance) {
+        m_distance = distance;
         addRequirements(m_subsystem);
     }
 
     @Override
     public void initialize() {
-        DriveTrainSubsystem.speedTankDrive(m_power, m_power);
+        DriveTrainSubsystem.distanceTankDrive(m_distance, m_distance);
     }
 
     @Override
     public void execute() {
-
+        // DriveTrainSubsystem.tankDrive(m_distance, m_distance);
     }
 
     @Override

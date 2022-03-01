@@ -16,7 +16,7 @@ public class JoystickDriveCommand extends CommandBase {
     @Override
     public void execute() {
 
-        DriveTrainSubsystem.arcadeDrive(DriveTrainSubsystem.PID());// use joystick to drive around
+        DriveTrainSubsystem.arcadeDrive();// use joystick to drive around
     }
 
     public void stop() {

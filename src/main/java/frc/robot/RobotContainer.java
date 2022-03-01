@@ -10,6 +10,7 @@ import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.JoystickDriveCommand;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.commands.DriveStraightCommand;
 import frc.robot.commands.DriveTrainCommand;
 
 import frc.robot.Constants.CONTROLLER;
@@ -44,8 +45,7 @@ public class RobotContainer {
 
   private void configureDefaults() {
     driveTrainSubsystem.setDefaultCommand(new JoystickDriveCommand(driveTrainSubsystem));
- }
-
+  }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be
@@ -68,8 +68,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return (new SequentialCommandGroup(IndexerCommand.teleIndex(indexerSubsystem), new WaitCommand(1),
-        IndexerCommand.teleIndex(indexerSubsystem)));
+    return (new SequentialCommandGroup(new DriveStraightCommand(4)));
 
   }
 }
