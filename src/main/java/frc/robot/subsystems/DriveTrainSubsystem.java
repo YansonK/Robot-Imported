@@ -157,6 +157,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
         double rotation = rotAxis * rotSensitivity;
 
+        if(rotation> -0.05 && rotation <0.05){
+            rotation = 0;
+        }
+
+
         double left, right;
 
         if (speed >= 0.0) {
@@ -164,8 +169,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
             right = speed - rotation;
 
         } else {
-            left = speed - rotation;
-            right = speed + rotation;
+            left = speed + rotation;
+            right = speed - rotation;
         }
 
         System.out.println("L" + left);

@@ -28,6 +28,12 @@ public final class Constants {
         public static final int DRIVE_VICTOR_L = 2; // left back motor controller Victor //LB Port 3 victor
         public static final int DRIVE_TALON_L = 0; // left front motor controller Talon
 
+        // public static final int DRIVE_VICTOR_R = 12; // Attatched to motor 4
+        // public static final int DRIVE_TALON_R = 13; // Attatched to motor 2
+        // public static final int DRIVE_VICTOR_L = 14; // Attatched to motor 3
+        // public static final int DRIVE_TALON_L = 15; // Attatched to motor 1
+        //IF YOU CHANGE THESE PORTS ALSO CHANGE THEIR ID IN PHOENIX TUNER
+
         public static final double RADIUSOFWHEEL = 0.075; // meters
 
     }
