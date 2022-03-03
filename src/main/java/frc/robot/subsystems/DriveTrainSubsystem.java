@@ -53,7 +53,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     private static int D = 1;
     public static double output;
     public final static Encoder leftEncoder = new Encoder(DIO.DRIVE_ENCODER_LEFT_A, DIO.DRIVE_ENCODER_LEFT_B);
-    private final static Encoder rightEncoder = new Encoder(DIO.DRIVE_ENCODER_RIGHT_A, DIO.DRIVE_ENCODER_RIGHT_B);
+    public final static Encoder rightEncoder = new Encoder(DIO.DRIVE_ENCODER_RIGHT_A, DIO.DRIVE_ENCODER_RIGHT_B);
 
     public static PIDController pid = new PIDController(P, I, D);
 
@@ -115,7 +115,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
         // rightVictor.set(ControlMode.PercentOutput, speed + 0.01);
 
         leftTalon.set(pid.calculate(leftEncoder.getDistance(), Ldistance));
-        rightTalon.set(pid.calculate(leftEncoder.getDistance(), Rdistance));
+        rightTalon.set(pid.calculate(rightEncoder.getDistance(), Rdistance));
     }
 
     public static void speedTankDrive(double Lspeed, double Rspeed) {
@@ -188,7 +188,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     // }
 
     public void initDefaultCommand() {
-        setDefaultCommand(DriveTrainCommand.teleDrive(0.0));
+        // setDefaultCommand(DriveTrainCommand.teleDrive(0.0));
     }
 
 }

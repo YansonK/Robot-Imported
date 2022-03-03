@@ -44,7 +44,7 @@ public class RobotContainer {
   }
 
   private void configureDefaults() {
-    driveTrainSubsystem.setDefaultCommand(new JoystickDriveCommand(driveTrainSubsystem));
+    // driveTrainSubsystem.setDefaultCommand(new JoystickDriveCommand(driveTrainSubsystem));
   }
 
   /**
@@ -68,7 +68,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return (new SequentialCommandGroup(new DriveStraightCommand(4)));
+    return (new SequentialCommandGroup(new DriveStraightCommand(0.5)));
 
   }
 }
