@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.MotorSafety;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase;
@@ -114,8 +115,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
         // leftVictor.set(ControlMode.PercentOutput, speed);
         // rightVictor.set(ControlMode.PercentOutput, speed + 0.01);
 
-        leftTalon.set(pid.calculate(leftEncoder.getDistance(), Ldistance));
-        rightTalon.set(pid.calculate(rightEncoder.getDistance(), Rdistance));
+        leftTalon.set(MathUtil.clamp(pid.calculate(leftEncoder.getDistance(), Ldistance), -0.5, 0.5));
+        rightTalon.set(MathUtil.clamp(pid.calculate(rightEncoder.getDistance(), Rdistance), -0.5, 0.5));
     }
 
     public static void speedTankDrive(double Lspeed, double Rspeed) {
@@ -157,10 +158,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
         double rotation = rotAxis * rotSensitivity;
 
-        if(rotation> -0.05 && rotation <0.05){
+        if (rotation > -0.05 && rotation < 0.05) {
             rotation = 0;
         }
-
 
         double left, right;
 
