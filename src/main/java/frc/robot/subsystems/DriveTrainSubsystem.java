@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import frc.robot.commands.DriveTrainCommand;
 
 import frc.robot.Constants;
+import frc.robot.Robot;
 import jdk.jfr.Percentage;
 
 import static frc.robot.Constants.*;
@@ -49,9 +50,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
     public static double setpoint;
     private static double previous_error;
     private static double previous_integral = 0;
-    private static int P = 1;
-    private static int I = 1;
-    private static int D = 1;
+    private static double P = 1;
+    private static double I = 1;
+    private static double D = 1;
     public static double output;
     public final static Encoder leftEncoder = new Encoder(DIO.DRIVE_ENCODER_LEFT_A, DIO.DRIVE_ENCODER_LEFT_B);
     public final static Encoder rightEncoder = new Encoder(DIO.DRIVE_ENCODER_RIGHT_A, DIO.DRIVE_ENCODER_RIGHT_B);
@@ -93,30 +94,35 @@ public class DriveTrainSubsystem extends SubsystemBase {
         rightVictor.follow((IMotorController) rightTalon);
         // leftFront.setInverted(true);
         // rightVictor.setInverted(true);
-        leftTalon.setInverted(true);// inverts motor so it can drive straight
+        // leftTalon.setInverted(true);// inverts motor so it can drive straight
 
         final double circumOfWheel = 2 * Math.PI * CAN.RADIUSOFWHEEL;
         final double distPerTick = circumOfWheel / 360;
 
         leftEncoder.setDistancePerPulse(distPerTick);
         rightEncoder.setDistancePerPulse(distPerTick);
+
     }
 
     public void periodic() {
 
     }
 
-    public static void distanceTankDrive(double Ldistance, double Rdistance) {
+    public static void distanceTankDrive(double Ldistance, double Rdistance, double setPt) {
         // WPI_TalonSRX leftFront.set(ControlMode.PercentOutput, power);
 
+        setpoint = setPt;
         // m_drive.tankDrive(power, power);
         // leftTalon.set(Lspeed);
         // rightTalon.set(Rspeed);
         // leftVictor.set(ControlMode.PercentOutput, speed);
         // rightVictor.set(ControlMode.PercentOutput, speed + 0.01);
+        leftTalon.set(MathUtil.clamp(Robot.leftPID, -0.2, 0.2));
+        rightTalon.set(MathUtil.clamp(Robot.rightPID, -0.2, 0.2));
 
-        leftTalon.set(MathUtil.clamp(pid.calculate(leftEncoder.getDistance(), Ldistance), -0.5, 0.5));
-        rightTalon.set(MathUtil.clamp(pid.calculate(rightEncoder.getDistance(), Rdistance), -0.5, 0.5));
+        System.out.println("Left:" + leftEncoder.getDistance());
+        System.out.println("Right:" + rightEncoder.getDistance());
+        System.out.println("--------");
     }
 
     public static void speedTankDrive(double Lspeed, double Rspeed) {

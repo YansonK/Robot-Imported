@@ -20,19 +20,21 @@ public class DriveStraightCommand extends CommandBase {
 
     @Override
     public void execute() {
-        DriveTrainSubsystem.distanceTankDrive(m_distance, m_distance);
+        DriveTrainSubsystem.distanceTankDrive(m_distance, m_distance, 1);
     }
 
     @Override
     public void end(boolean interrupted) {
         DriveTrainSubsystem.stop();
 
+        DriveTrainSubsystem.leftEncoder.reset();
+        DriveTrainSubsystem.rightEncoder.reset();
+
     }
 
     @Override
     public boolean isFinished() {
-        if(DriveTrainSubsystem.leftEncoder.getDistance() == m_distance )
-            return true;
+        DriveTrainSubsystem.pid.atSetpoint();
         return false;
     }
 
