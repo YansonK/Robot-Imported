@@ -91,7 +91,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     leftPID = DriveTrainSubsystem.pid.calculate(DriveTrainSubsystem.leftEncoder.getDistance(),
         DriveTrainSubsystem.setpoint);
-    rightPID = DriveTrainSubsystem.pid.calculate(DriveTrainSubsystem.rightEncoder.getDistance(),
+    rightPID = DriveTrainSubsystem.pid.calculate(-1 * DriveTrainSubsystem.rightEncoder.getDistance(),
         DriveTrainSubsystem.setpoint);
   }
 
