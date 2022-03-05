@@ -16,6 +16,7 @@ public class DriveStraightCommand extends CommandBase {
     @Override
     public void initialize() {
         // DriveTrainSubsystem.distanceTankDrive(m_distance, m_distance);
+        DriveTrainSubsystem.pidPosition.setTolerance(.05);
     }
 
     @Override
@@ -33,7 +34,7 @@ public class DriveStraightCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        DriveTrainSubsystem.pid.atSetpoint();
+        DriveTrainSubsystem.pidPosition.atSetpoint();
         return false;
     }
 

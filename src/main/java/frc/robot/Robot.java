@@ -23,8 +23,10 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  public static double leftPID;
-  public static double rightPID;
+  public static double leftPIDPos;
+  public static double rightPIDPos;
+  public static double leftPIDVel;
+  public static double rightPIDVel;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -89,10 +91,14 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    leftPID = DriveTrainSubsystem.pid.calculate(DriveTrainSubsystem.leftEncoder.getDistance(),
-        DriveTrainSubsystem.setpoint);
-    rightPID = DriveTrainSubsystem.pid.calculate(-1 * DriveTrainSubsystem.rightEncoder.getDistance(),
-        DriveTrainSubsystem.setpoint);
+    leftPIDPos = DriveTrainSubsystem.pidPosition.calculate(DriveTrainSubsystem.leftEncoder.getDistance(),
+        DriveTrainSubsystem.setpointPos);
+    rightPIDPos = DriveTrainSubsystem.pidPosition.calculate(-1 * DriveTrainSubsystem.rightEncoder.getDistance(),
+        DriveTrainSubsystem.setpointPos);
+    leftPIDVel = DriveTrainSubsystem.pidVelocity.calculate(DriveTrainSubsystem.leftEncoder.getDistance() / 0.02,
+        DriveTrainSubsystem.pidPosition.getPositionError());
+    rightPIDVel = DriveTrainSubsystem.pidVelocity.calculate(DriveTrainSubsystem.rightEncoder.getDistance() / 0.02,
+        DriveTrainSubsystem.pidPosition.getPositionError());
   }
 
   @Override

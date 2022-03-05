@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.networktables.EntryListenerFlags;
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 //import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import frc.robot.commands.DriveTrainCommand;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
 
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -38,8 +40,8 @@ import edu.wpi.first.wpilibj.Joystick;
 public class DriveTrainSubsystem extends SubsystemBase {
 
     // motor controllers
-    public static final MotorController leftTalon = new WPI_TalonSRX(CAN.DRIVE_TALON_L);
-    private static final MotorController rightTalon = new WPI_TalonSRX(CAN.DRIVE_TALON_R);
+    public static final TalonSRX leftTalon = new WPI_TalonSRX(CAN.DRIVE_TALON_L);
+    private static final TalonSRX rightTalon = new WPI_TalonSRX(CAN.DRIVE_TALON_R);
 
     private static final VictorSPX leftVictor = new VictorSPX(CAN.DRIVE_VICTOR_L);
     private static final VictorSPX rightVictor = new VictorSPX(CAN.DRIVE_VICTOR_R);
@@ -47,7 +49,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     private static boolean slow = false;
 
     private static double integral;
-    public static double setpoint;
+    public static double setpointPos;
+    public static double setpointVel;
     private static double previous_error;
     private static double previous_integral = 0;
     private static double kP = 10; // 15
@@ -57,7 +60,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     public final static Encoder leftEncoder = new Encoder(DIO.DRIVE_ENCODER_LEFT_A, DIO.DRIVE_ENCODER_LEFT_B);
     public final static Encoder rightEncoder = new Encoder(DIO.DRIVE_ENCODER_RIGHT_A, DIO.DRIVE_ENCODER_RIGHT_B);
 
-    public static PIDController pid = new PIDController(kP, kI, kD);
+    public static PIDController pidPosition = new PIDController(kP, kI, kD);
+    public static PIDController pidVelocity = new PIDController(kP, kI, kD);
 
     // private static final WPI_TalonSRX rightFront = new
     // WPI_TalonSRX(CAN.DRIVE_RF);
@@ -70,8 +74,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     // MotorControllerGroup(rightFront, rightBack);
 
     //
-    // private static DifferentialDrive m_drive = new
-    // DifferentialDrive(leftControllers, rightControllers);
+    // private static DifferentialDrive m_drive = new DifferentialDrive(leftTalon,
+    // rightTalon);
 
     // encoders
 
@@ -108,50 +112,51 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     }
 
-    public static void distanceTankDrive(double setPt) {
+    public static void distanceTankDrive(double setPtDistance) {
         // WPI_TalonSRX leftFront.set(ControlMode.PercentOutput, power);
 
-        setpoint = setPt;
+        setpointPos = setPtDistance;
+
         // m_drive.tankDrive(power, power);
         // leftTalon.set(Lspeed);
         // rightTalon.set(Rspeed);
         // leftVictor.set(ControlMode.PercentOutput, speed);
         // rightVictor.set(ControlMode.PercentOutput, speed + 0.01);
-        leftTalon.set(MathUtil.clamp(Robot.leftPID, -0.4, 0.4));
-        rightTalon.set(MathUtil.clamp(Robot.rightPID, -0.4, 0.4));
+        leftTalon.set(ControlMode.Velocity, MathUtil.clamp(Robot.leftPIDPos, -0.4, 0.4));
+        rightTalon.set(ControlMode.Velocity, MathUtil.clamp(Robot.rightPIDPos, -0.4, 0.4));
 
         System.out.println("Left:" + leftEncoder.getDistance());
         System.out.println("Right:" + rightEncoder.getDistance());
         System.out.println("--------");
     }
 
-    public static void speedTankDrive(double Lspeed, double Rspeed) {
-        leftTalon.set(Lspeed);
-        rightTalon.set(Rspeed);
+    public static void powerTankDrive(double Lspeed, double Rspeed) {
+        leftTalon.set(ControlMode.Velocity, Lspeed);
+        rightTalon.set(ControlMode.Velocity, Rspeed);
     }
 
     public static void stop() {
         // WPI_TalonSRX leftFront.set(ControlMode.PercentOutput, power);
 
         // m_drive.stopMotor();
-        leftTalon.set(0);
-        rightTalon.set(0);
+        leftTalon.set(ControlMode.Velocity, 0);
+        rightTalon.set(ControlMode.Velocity, 0);
         // leftVictor.set(ControlMode.PercentOutput, 0);
         // rightVictor.set(ControlMode.PercentOutput, 0);
 
     }
 
-    public static void PID() {
-        while (true) {
-            double error = setpoint - CONTROLLER.JOYSTICK.getTwist();
-            integral += previous_integral + error * .02;
-            double derivative = (error - previous_error) / 0.02;
-            output = kP * error + kI * integral + kD * derivative;
+    // public static void PID() {
+    // while (true) {
+    // double error = setpoint;
+    // integral += previous_integral + error * .02;
+    // double derivative = (error - previous_error) / 0.02;
+    // output = kP * error + kI * integral + kD * derivative;
 
-            previous_error = error;
-            previous_integral = integral;
-        }
-    }
+    // previous_error = error;
+    // previous_integral = integral;
+    // }
+    // }
 
     public static void arcadeDrive() {
         double yAxis = CONTROLLER.JOYSTICK.getY() * Constants.CONTROLLER.INVERT_Y;
@@ -183,7 +188,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
         System.out.println("R" + right);
         System.out.println("Rot:" + rotation);
         System.out.println("-------------");
-        speedTankDrive(left, right);
+        powerTankDrive(left, right);
     }
 
     // public void MotorSafetyHelper() {
