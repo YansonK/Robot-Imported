@@ -7,10 +7,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.IndexerCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.JoystickDriveCommand;
 import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
-import frc.robot.commands.DriveTrainCommand;
+import frc.robot.commands.DriveStraightCommand;
 
 import frc.robot.Constants.CONTROLLER;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,6 +31,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final IndexerSubsystem indexerSubsystem = new IndexerSubsystem();
   private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
   // private final IndexerCommand indexerCommand = new
   // IndexerCommand(indexerSubsystem);
@@ -58,7 +61,9 @@ public class RobotContainer {
     indexerButton.whileActiveContinuous(IndexerCommand.teleIndex(indexerSubsystem), true);
 
     JoystickButton driveButton = new JoystickButton(CONTROLLER.JOYSTICK, 2);
-    driveButton.whileActiveContinuous(DriveTrainCommand.teleDrive(0.2), true);
+    driveButton.whileActiveContinuous(IntakeCommand.teleIntake(intakeSubsystem,0.5), true);
+
+
   }
 
   /**
@@ -68,8 +73,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return (new SequentialCommandGroup(IndexerCommand.teleIndex(indexerSubsystem), new WaitCommand(1),
-        IndexerCommand.teleIndex(indexerSubsystem)));
+    return (new SequentialCommandGroup(DriveStraightCommand.teleDrive(.7, 5), new WaitCommand(10)));
 
   }
 }

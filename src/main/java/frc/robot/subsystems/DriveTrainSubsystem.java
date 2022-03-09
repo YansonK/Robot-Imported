@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.MotorSafety;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase;
@@ -22,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 //import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import frc.robot.commands.DriveTrainCommand;
 
 import frc.robot.Constants;
 import jdk.jfr.Percentage;
@@ -32,14 +32,26 @@ import edu.wpi.first.wpilibj.Joystick;
 
 public class DriveTrainSubsystem extends SubsystemBase {
 
+    private static final double kF = 1 / 2.1; // Percentage output per m/s
     // motor controllers
     private static final MotorController leftTalon = new WPI_TalonSRX(CAN.DRIVE_TALON_L);
     private static final MotorController rightTalon = new WPI_TalonSRX(CAN.DRIVE_TALON_R);
 
+
     private static final VictorSPX leftVictor = new VictorSPX(CAN.DRIVE_VICTOR_L);
     private static final VictorSPX rightVictor = new VictorSPX(CAN.DRIVE_VICTOR_R);
 
+
+    public final static Encoder leftEncoder = new Encoder(DIO.DRIVE_ENCODER_LEFT_A, DIO.DRIVE_ENCODER_LEFT_B);
+    public final static Encoder rightEncoder = new Encoder(DIO.DRIVE_ENCODER_RIGHT_A, DIO.DRIVE_ENCODER_RIGHT_B);
+
     private static boolean slow = false;
+
+    public static PIDController leftPID = new PIDController(0.95, 0, 0);
+    public static PIDController rightPID = new PIDController(0.95, 0, 0);
+
+    public static DifferentialDrive robotDrive = new DifferentialDrive(leftTalon, rightTalon);
+
 
     // private static final WPI_TalonSRX rightFront = new
     // WPI_TalonSRX(CAN.DRIVE_RF);
@@ -76,26 +88,39 @@ public class DriveTrainSubsystem extends SubsystemBase {
     // }
 
     public DriveTrainSubsystem() {
-        // leftVictor.follow((IMotorController) leftTalon);
-        // rightVictor.follow((IMotorController) rightTalon);
-        // leftFront.setInverted(true);
+        leftVictor.follow((IMotorController) leftTalon);
+        rightVictor.follow((IMotorController) rightTalon);
+        rightVictor.setInverted(true);
         // rightVictor.setInverted(true);
-        leftTalon.setInverted(true);//inverts motor so it can drive straight
+        rightTalon.setInverted(true);//inverts motor so it can drive straight
     }
 
     public void periodic() {
 
     }
 
-    public static void tankDrive(double Lspeed, double Rspeed) {
+    public static void tankDrive(double leftTarget, double rightTarget) {
         // WPI_TalonSRX leftFront.set(ControlMode.PercentOutput, power);
 
         // m_drive.tankDrive(power, power);
 
-        leftTalon.set(Lspeed);
-        rightTalon.set(Rspeed);
-        // leftVictor.set(ControlMode.PercentOutput, speed);
-        // rightVictor.set(ControlMode.PercentOutput, speed + 0.01);
+        // leftTalon.set(Lspeed);
+        // rightTalon.set(Rspeed);
+
+        leftTarget = MathUtil.clamp(leftTarget, -MAX_SPEED, MAX_SPEED);
+        rightTarget = MathUtil.clamp(rightTarget, -MAX_SPEED, MAX_SPEED);
+
+        final double ffLeft = kF * leftTarget;
+        final double ffRight = kF * rightTarget;
+
+        final double adjustedLeft = leftPID.calculate(-leftEncoder.getRate(), leftTarget) + ffLeft;
+        final double adjustedRight = rightPID.calculate(rightEncoder.getRate(), rightTarget) + ffRight;
+
+        robotDrive.tankDrive(adjustedLeft, adjustedRight);
+
+        System.out.println("Left:" + leftEncoder.getDistance());
+        System.out.println("Right:" + rightEncoder.getDistance());
+        System.out.println("--------");
     }
 
     public static void stop() {
@@ -111,31 +136,36 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     public static void arcadeDrive() {
         double yAxis = CONTROLLER.JOYSTICK.getY() * Constants.CONTROLLER.INVERT_Y;
-        double rotAxis = CONTROLLER.JOYSTICK.getTwist();
+        double rotAxis = CONTROLLER.JOYSTICK.getTwist() * Constants.CONTROLLER.INVERT_ROT;
 
         double ySensitivity = slow ? 0.75 : 1.0;
-        double rotSensitivity = slow ? 0.2 : 0.4;
+        double rotSensitivity = slow ? 0.2 : 0.6;
 
         double speed = yAxis * ySensitivity;
 
         double rotation = rotAxis * rotSensitivity;
 
+        if (rotation > -0.13 && rotation < 0.0 && yAxis>0) {
+            rotation = 0;
+        }
+
         double left, right;
 
-        if (speed >= 0.0) {
+        //if (speed >= 0.0) {
             left = speed + rotation;
             right = speed - rotation;
 
-        } else {
-            left = speed - rotation;
-            right = speed + rotation;
-        }
+        // } //else {
+        //     left = speed - rotation;
+        //     right = speed + rotation;
+        // }
 
-        System.out.println(speed);
-        System.out.println(rotation);
+        System.out.println("L" + left);
+        System.out.println("R" + right);
+        System.out.println("Rot:" + rotation);
+        System.out.println("-------------");
 
-
-        tankDrive(left,right);
+        robotDrive.tankDrive(left,right);
     }
 
     // public void MotorSafetyHelper() {
@@ -144,9 +174,5 @@ public class DriveTrainSubsystem extends SubsystemBase {
     // rightBack.setSafetyEnabled(false);
     // rightFront.setSafetyEnabled(false);
     // }
-
-    public void initDefaultCommand() {
-        setDefaultCommand(DriveTrainCommand.teleDrive(0.0));
-    }
 
 }
