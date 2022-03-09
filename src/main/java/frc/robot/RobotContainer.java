@@ -13,10 +13,6 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.commands.DriveStraightCommand;
-<<<<<<< HEAD
-=======
-import frc.robot.commands.DriveTrainCommand;
->>>>>>> d042acb68b4a5a37ae007f1831bc8948a5bf2f07
 
 import frc.robot.Constants.CONTROLLER;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -77,11 +73,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-<<<<<<< HEAD
     return (new SequentialCommandGroup(DriveStraightCommand.teleDrive(.7, 5), new WaitCommand(10)));
-=======
-    return (new SequentialCommandGroup(new DriveStraightCommand(0.5)));
->>>>>>> d042acb68b4a5a37ae007f1831bc8948a5bf2f07
 
   }
 }

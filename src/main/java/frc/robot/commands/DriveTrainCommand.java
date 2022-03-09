@@ -21,11 +21,7 @@ public class DriveTrainCommand extends CommandBase {
 
     @Override
     public void initialize() {
-<<<<<<< HEAD
         
-=======
-        DriveTrainSubsystem.powerTankDrive(m_power, m_power);
->>>>>>> d042acb68b4a5a37ae007f1831bc8948a5bf2f07
     }
 
     @Override
