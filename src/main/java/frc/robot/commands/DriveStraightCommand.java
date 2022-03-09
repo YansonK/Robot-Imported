@@ -6,22 +6,22 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class DriveStraightCommand extends CommandBase {
     public final DriveTrainSubsystem m_subsystem = new DriveTrainSubsystem();
-    public double m_distance;
+    public double m_speed;
 
-    public DriveStraightCommand(double distance) {
-        m_distance = distance;
+    public DriveStraightCommand(double speed) {
+        m_speed = speed;
         addRequirements(m_subsystem);
     }
 
     @Override
     public void initialize() {
         // DriveTrainSubsystem.distanceTankDrive(m_distance, m_distance);
-        DriveTrainSubsystem.pidPosition.setTolerance(.05);
+        // DriveTrainSubsystem.pidPosition.setTolerance(.05);
     }
 
     @Override
     public void execute() {
-        DriveTrainSubsystem.distanceTankDrive(m_distance);
+        DriveTrainSubsystem.tankDrive(m_speed, m_speed);
     }
 
     @Override

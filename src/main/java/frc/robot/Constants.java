@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public final class Constants {
 
+    public static final double MAX_SPEED = 5.0; // meters per second
+
     public static class CAN {
         public static final int SHOOTER = 15;// 15; // Left Shooter port
 

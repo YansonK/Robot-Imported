@@ -91,14 +91,20 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    leftPIDPos = DriveTrainSubsystem.pidPosition.calculate(DriveTrainSubsystem.leftEncoder.getDistance(),
-        DriveTrainSubsystem.setpointPos);
-    rightPIDPos = DriveTrainSubsystem.pidPosition.calculate(-1 * DriveTrainSubsystem.rightEncoder.getDistance(),
-        DriveTrainSubsystem.setpointPos);
-    leftPIDVel = DriveTrainSubsystem.pidVelocity.calculate(DriveTrainSubsystem.leftEncoder.getDistance() / 0.02,
-        DriveTrainSubsystem.pidPosition.getPositionError());
-    rightPIDVel = DriveTrainSubsystem.pidVelocity.calculate(DriveTrainSubsystem.rightEncoder.getDistance() / 0.02,
-        DriveTrainSubsystem.pidPosition.getPositionError());
+    // leftPIDPos =
+    // DriveTrainSubsystem.pidPosition.calculate(DriveTrainSubsystem.leftEncoder.getDistance(),
+    // DriveTrainSubsystem.setpointPos);
+    // rightPIDPos = DriveTrainSubsystem.pidPosition.calculate(-1 *
+    // DriveTrainSubsystem.rightEncoder.getDistance(),
+    // DriveTrainSubsystem.setpointPos);
+    // leftPIDVel =
+    // DriveTrainSubsystem.pidVelocity.calculate(DriveTrainSubsystem.leftEncoder.getDistance()
+    // / 0.02,
+    // DriveTrainSubsystem.pidPosition.getPositionError());
+    // rightPIDVel =
+    // DriveTrainSubsystem.pidVelocity.calculate(DriveTrainSubsystem.rightEncoder.getDistance()
+    // / 0.02,
+    // DriveTrainSubsystem.pidPosition.getPositionError());
   }
 
   @Override
