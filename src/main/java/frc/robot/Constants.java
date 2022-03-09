@@ -26,6 +26,7 @@ public final class Constants {
         public static final int INDEXER = 10; // Port for indexer motor
 
 
+<<<<<<< HEAD
         //Drive train motors
         public static final int DRIVE_VICTOR_R = 12; // Attatched to motor 4
         public static final int DRIVE_TALON_R = 13; // Attatched to motor 2
@@ -37,6 +38,16 @@ public final class Constants {
         //IF YOU CHANGE THESE PORTS ALSO CHANGE THEIR ID IN THEIR RESPECTIVE SOFTWARE MANAGERS
         //TALONS/VICTORS USE PHOENIX TUNER
         //SPARKS USE REV Hardware Client
+=======
+        // public static final int DRIVE_VICTOR_R = 12; // Attatched to motor 4
+        // public static final int DRIVE_TALON_R = 13; // Attatched to motor 2
+        // public static final int DRIVE_VICTOR_L = 14; // Attatched to motor 3
+        // public static final int DRIVE_TALON_L = 15; // Attatched to motor 1
+        // IF YOU CHANGE THESE PORTS ALSO CHANGE THEIR ID IN PHOENIX TUNER
+
+        public static final double RADIUSOFWHEEL = 0.075; // meters
+
+>>>>>>> d042acb68b4a5a37ae007f1831bc8948a5bf2f07
     }
 
     public static class CONTROLLER {

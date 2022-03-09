@@ -4,9 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+<<<<<<< HEAD
+=======
+import frc.robot.commands.DriveTrainCommand;
+>>>>>>> d042acb68b4a5a37ae007f1831bc8948a5bf2f07
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 /**
@@ -20,6 +25,11 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+
+  public static double leftPIDPos;
+  public static double rightPIDPos;
+  public static double leftPIDVel;
+  public static double rightPIDVel;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -84,10 +94,27 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+<<<<<<< HEAD
       m_autonomousCommand.schedule();
       System.out.println("Left:" + DriveTrainSubsystem.leftEncoder.getDistance());
       System.out.println("Right:" + DriveTrainSubsystem.rightEncoder.getDistance());
       System.out.println("--------");
+=======
+    // leftPIDPos =
+    // DriveTrainSubsystem.pidPosition.calculate(DriveTrainSubsystem.leftEncoder.getDistance(),
+    // DriveTrainSubsystem.setpointPos);
+    // rightPIDPos = DriveTrainSubsystem.pidPosition.calculate(-1 *
+    // DriveTrainSubsystem.rightEncoder.getDistance(),
+    // DriveTrainSubsystem.setpointPos);
+    // leftPIDVel =
+    // DriveTrainSubsystem.pidVelocity.calculate(DriveTrainSubsystem.leftEncoder.getDistance()
+    // / 0.02,
+    // DriveTrainSubsystem.pidPosition.getPositionError());
+    // rightPIDVel =
+    // DriveTrainSubsystem.pidVelocity.calculate(DriveTrainSubsystem.rightEncoder.getDistance()
+    // / 0.02,
+    // DriveTrainSubsystem.pidPosition.getPositionError());
+>>>>>>> d042acb68b4a5a37ae007f1831bc8948a5bf2f07
   }
 
   @Override
