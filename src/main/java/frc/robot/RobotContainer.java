@@ -46,9 +46,9 @@ public class RobotContainer {
   }
 
   private void configureDefaults() {
-    driveTrainSubsystem.setDefaultCommand(new JoystickDriveCommand(driveTrainSubsystem));
- }
-
+    // driveTrainSubsystem.setDefaultCommand(new
+    // JoystickDriveCommand(driveTrainSubsystem));
+  }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be

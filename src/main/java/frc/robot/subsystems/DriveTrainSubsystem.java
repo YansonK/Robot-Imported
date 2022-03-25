@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.networktables.EntryListenerFlags;
@@ -25,17 +26,21 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 import frc.robot.Constants;
+import frc.robot.Robot;
 import jdk.jfr.Percentage;
 
 import static frc.robot.Constants.*;
+
+import javax.xml.transform.ErrorListener;
+
 import edu.wpi.first.wpilibj.Joystick;
 
 public class DriveTrainSubsystem extends SubsystemBase {
 
     private static final double kF = 1 / 2.1; // Percentage output per m/s
     // motor controllers
-    private static final MotorController leftTalon = new WPI_TalonSRX(CAN.DRIVE_TALON_L);
-    private static final MotorController rightTalon = new WPI_TalonSRX(CAN.DRIVE_TALON_R);
+    public static final WPI_TalonSRX leftTalon = new WPI_TalonSRX(CAN.DRIVE_TALON_L);
+    private static final WPI_TalonSRX rightTalon = new WPI_TalonSRX(CAN.DRIVE_TALON_R);
 
 
     private static final VictorSPX leftVictor = new VictorSPX(CAN.DRIVE_VICTOR_L);
@@ -64,14 +69,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     // MotorControllerGroup(rightFront, rightBack);
 
     //
-    // private static DifferentialDrive m_drive = new
-    // DifferentialDrive(leftControllers, rightControllers);
+    // private static DifferentialDrive m_drive = new DifferentialDrive(leftTalon,
+    // rightTalon);
 
     // encoders
-    // private final Encoder leftEncoder = new Encoder(DIO.DRIVE_ENCODER_LEFT_A,
-    // DIO.DRIVE_ENCODER_LEFT_B);
-    // private final Encoder rightEncoder = new Encoder(DIO.DRIVE_ENCODER_RIGHT_A,
-    // DIO.DRIVE_ENCODER_RIGHT_B);
 
     // public class Robot {
     // MotorController m_frontLeft = new PWMVictorSPX(1);
@@ -113,7 +114,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     public static void tankDrive(double leftTarget, double rightTarget) {
         // WPI_TalonSRX leftFront.set(ControlMode.PercentOutput, power);
 
-        // m_drive.tankDrive(power, power);
+        // setpointPos = setPtDistance;
 
         // leftTalon.set(Lspeed);
         // rightTalon.set(Rspeed);
@@ -129,8 +130,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
         // leftTalon.(adjustedLeft, adjustedRight);
 
-        leftTalon.set(leftTarget);
-        rightTalon.set(rightTarget);
+        leftTalon.set(ControlMode.Velocity, leftTarget);
+        rightTalon.set(ControlMode.Velocity, rightTarget);
 
         System.out.println("Left Rate:" + leftEncoder.getRate());
         System.out.println("Right Rate:" + rightEncoder.getRate());
@@ -144,12 +145,24 @@ public class DriveTrainSubsystem extends SubsystemBase {
         // WPI_TalonSRX leftFront.set(ControlMode.PercentOutput, power);
 
         // m_drive.stopMotor();
-        leftTalon.set(0);
-        rightTalon.set(0);
+        leftTalon.set(ControlMode.Velocity, 0);
+        rightTalon.set(ControlMode.Velocity, 0);
         // leftVictor.set(ControlMode.PercentOutput, 0);
         // rightVictor.set(ControlMode.PercentOutput, 0);
 
     }
+
+    // public static void PID() {
+    // while (true) {
+    // double error = setpoint;
+    // integral += previous_integral + error * .02;
+    // double derivative = (error - previous_error) / 0.02;
+    // output = kP * error + kI * integral + kD * derivative;
+
+    // previous_error = error;
+    // previous_integral = integral;
+    // }
+    // }
 
     public static void arcadeDrive() {
         double yAxis = CONTROLLER.JOYSTICK.getY() * Constants.CONTROLLER.INVERT_Y;
