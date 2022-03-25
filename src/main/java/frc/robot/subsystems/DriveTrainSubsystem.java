@@ -47,8 +47,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     private static boolean slow = false;
 
-    public static PIDController leftPID = new PIDController(0.95, 0, 0);
-    public static PIDController rightPID = new PIDController(0.95, 0, 0);
+    public static PIDController leftPID = new PIDController(0.4, 0, 0);
+    public static PIDController rightPID = new PIDController(0.4, 0, 0);
 
     public static DifferentialDrive robotDrive = new DifferentialDrive(leftTalon, rightTalon);
 
@@ -93,6 +93,17 @@ public class DriveTrainSubsystem extends SubsystemBase {
         rightVictor.setInverted(true);
         // rightVictor.setInverted(true);
         rightTalon.setInverted(true);//inverts motor so it can drive straight
+
+        //360 CPR (counts per revolution)
+        //4 CPR = 1 PPR (Pulse per revolution)
+        final double encoderPPR = 90;
+        final double circumOfWheel = 2 * Math.PI * WHEEL_RADIUS; // Meters
+        final double distPerPulse = circumOfWheel / encoderPPR; // Meters per tick
+
+        leftEncoder.setDistancePerPulse(distPerPulse);
+        rightEncoder.setDistancePerPulse(distPerPulse);
+        leftEncoder.reset();
+        rightEncoder.reset();
     }
 
     public void periodic() {
@@ -107,19 +118,25 @@ public class DriveTrainSubsystem extends SubsystemBase {
         // leftTalon.set(Lspeed);
         // rightTalon.set(Rspeed);
 
-        leftTarget = MathUtil.clamp(leftTarget, -MAX_SPEED, MAX_SPEED);
-        rightTarget = MathUtil.clamp(rightTarget, -MAX_SPEED, MAX_SPEED);
+        // leftTarget = MathUtil.clamp(leftTarget, -MAX_SPEED, MAX_SPEED);
+        // rightTarget = MathUtil.clamp(rightTarget, -MAX_SPEED, MAX_SPEED);
 
-        final double ffLeft = kF * leftTarget;
-        final double ffRight = kF * rightTarget;
+        // final double ffLeft = kF * leftTarget;
+        // final double ffRight = kF * rightTarget;
 
-        final double adjustedLeft = leftPID.calculate(-leftEncoder.getRate(), leftTarget) + ffLeft;
-        final double adjustedRight = rightPID.calculate(rightEncoder.getRate(), rightTarget) + ffRight;
+        // double adjustedLeft = leftPID.calculate(-leftEncoder.getRate(), leftTarget);
+        // double adjustedRight = rightPID.calculate(rightEncoder.getRate(), rightTarget);
 
-        robotDrive.tankDrive(adjustedLeft, adjustedRight);
+        // leftTalon.(adjustedLeft, adjustedRight);
 
-        System.out.println("Left:" + leftEncoder.getDistance());
-        System.out.println("Right:" + rightEncoder.getDistance());
+        leftTalon.set(leftTarget);
+        rightTalon.set(rightTarget);
+
+        System.out.println("Left Rate:" + leftEncoder.getRate());
+        System.out.println("Right Rate:" + rightEncoder.getRate());
+        System.out.println("--------");
+        System.out.println("Left Dist:" + leftEncoder.getDistance());
+        System.out.println("Right Dist:" + rightEncoder.getDistance());
         System.out.println("--------");
     }
 
@@ -139,7 +156,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
         double rotAxis = CONTROLLER.JOYSTICK.getTwist() * Constants.CONTROLLER.INVERT_ROT;
 
         double ySensitivity = slow ? 0.75 : 1.0;
-        double rotSensitivity = slow ? 0.2 : 0.6;
+        double rotSensitivity = slow ? 0.2 : 1.0;
 
         double speed = yAxis * ySensitivity;
 

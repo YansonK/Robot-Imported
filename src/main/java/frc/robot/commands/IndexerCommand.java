@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -11,8 +12,8 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 public class IndexerCommand extends CommandBase {
     private final IndexerSubsystem m_subsystem;
 
-    public static Command teleIndex(IndexerSubsystem subsystem) {
-        return new IndexerCommand(subsystem).withTimeout(.2);
+    public static Command teleIndex(IndexerSubsystem subsystem, double time) {
+        return new IndexerCommand(subsystem).withTimeout(time);
     }
 
     public IndexerCommand(IndexerSubsystem subsystem) {
@@ -23,16 +24,17 @@ public class IndexerCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        m_subsystem.run(VictorSPXControlMode.PercentOutput, 0.5);
+        
     }
 
     @Override
     public void execute() {
+        m_subsystem.run();
     }
 
     @Override
     public void end(boolean interrupted) {
-        m_subsystem.run(VictorSPXControlMode.PercentOutput, 0);
+        m_subsystem.stop();
     }
 
     @Override

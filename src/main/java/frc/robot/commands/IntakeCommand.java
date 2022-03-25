@@ -16,6 +16,10 @@ public class IntakeCommand extends CommandBase{
         return new IntakeCommand(subsystem, power).withTimeout(.2);
     }
 
+    public static Command autoIntake(IntakeSubsystem subsystem, double power, double time){
+        return new IntakeCommand(subsystem, power).withTimeout(time);
+    }
+
     public IntakeCommand(IntakeSubsystem subsystem, double power) {
         m_subsystem = subsystem;
         m_power = power;

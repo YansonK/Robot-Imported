@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
+
 public class DriveStraightCommand extends CommandBase {
     public final DriveTrainSubsystem m_subsystem = new DriveTrainSubsystem();
     public double m_power;
@@ -21,11 +22,12 @@ public class DriveStraightCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        DriveTrainSubsystem.tankDrive(m_power,m_power);
+        
     }
 
     @Override
     public void execute() {
+        DriveTrainSubsystem.tankDrive(m_power,m_power);
 
     }
 
@@ -38,6 +40,9 @@ public class DriveStraightCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return false;
+    }
+
+    public class teleDrive {
     }
 
 }

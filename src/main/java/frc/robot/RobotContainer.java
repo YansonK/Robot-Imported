@@ -16,6 +16,7 @@ import frc.robot.commands.DriveStraightCommand;
 
 import frc.robot.Constants.CONTROLLER;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -33,8 +34,7 @@ public class RobotContainer {
   private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
-  // private final IndexerCommand indexerCommand = new
-  // IndexerCommand(indexerSubsystem);
+  private final IndexerCommand indexerCommand = new IndexerCommand(indexerSubsystem);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -57,11 +57,14 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton indexerButton = new JoystickButton(CONTROLLER.JOYSTICK, 1);
-    indexerButton.whileActiveContinuous(IndexerCommand.teleIndex(indexerSubsystem), true);
 
-    JoystickButton driveButton = new JoystickButton(CONTROLLER.JOYSTICK, 2);
-    driveButton.whileActiveContinuous(IntakeCommand.teleIntake(intakeSubsystem,0.5), true);
+    IndexerSubsystem.setPowerSupplier(() -> CONTROLLER.JOYSTICK.getRawAxis(3));
+
+    JoystickButton indexerButton = new JoystickButton(CONTROLLER.JOYSTICK, 1);
+    indexerButton.whileActiveContinuous(IndexerCommand.teleIndex(indexerSubsystem,0.5), true);
+
+    JoystickButton intakeButton = new JoystickButton(CONTROLLER.JOYSTICK, 2);
+    intakeButton.whileActiveContinuous(IntakeCommand.teleIntake(intakeSubsystem,0.5), true);
 
 
   }
@@ -73,7 +76,13 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return (new SequentialCommandGroup(DriveStraightCommand.teleDrive(.7, 5), new WaitCommand(10)));
+    return new SequentialCommandGroup(
+              new ParallelCommandGroup(
+                IntakeCommand.autoIntake(intakeSubsystem,1,3),
+                new SequentialCommandGroup(
+                  new WaitCommand(1),
+                  IndexerCommand.teleIndex(indexerSubsystem, 2))
+              ),DriveStraightCommand.teleDrive(1,3));
 
   }
 }

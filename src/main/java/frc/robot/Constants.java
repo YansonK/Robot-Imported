@@ -18,14 +18,17 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public final class Constants {
 
+    public static final double WHEEL_RADIUS = 0.075; // Meters
+    //used for autonomus turning
+    //(Revolution here refers to the robot pivotings 360 degrees)
+    public static final double FULL_REVO_DIST = 1.915; // Meters
+    public static final double DIST_PER_DEGREE = FULL_REVO_DIST/360;//Meters
+    public static final double PULSES_PER_REVO = 365.76; // Pulses
+    public static final double PULSES_PER_HALF_REVO = PULSES_PER_REVO/2;
+
     public static final double MAX_SPEED = 5.0; // meters per second
 
     public static class CAN {
-        public static final int SHOOTER = 15;// 15; // Left Shooter port
-
-        public static final int INDEXER = 10; // Port for indexer motor
-
-
         //Drive train motors
         public static final int DRIVE_VICTOR_R = 12; // Attatched to motor 4
         public static final int DRIVE_TALON_R = 13; // Attatched to motor 2
@@ -34,6 +37,11 @@ public final class Constants {
 
         //Intake motor
         public static final int INTAKE_SPARK = 4;
+
+        //Indexer motors
+        public static final int INDEXER_TALON = 1;
+        public static final int INDEXER_VICTOR = 0;
+
         //IF YOU CHANGE THESE PORTS ALSO CHANGE THEIR ID IN THEIR RESPECTIVE SOFTWARE MANAGERS
         //TALONS/VICTORS USE PHOENIX TUNER
         //SPARKS USE REV Hardware Client
@@ -43,6 +51,7 @@ public final class Constants {
         public static final Joystick JOYSTICK = new Joystick(0);//
         public static final int INVERT_Y = 1;// flip the Yaxis(Joystick is inherintly backward for some reason)
         public static final int INVERT_ROT = 1;
+
 
     }
 

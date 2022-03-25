@@ -84,10 +84,14 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-      m_autonomousCommand.schedule();
+      // m_autonomousCommand.schedule();
       System.out.println("Left:" + DriveTrainSubsystem.leftEncoder.getDistance());
       System.out.println("Right:" + DriveTrainSubsystem.rightEncoder.getDistance());
       System.out.println("--------");
+      System.out.println("Left Rate:" + DriveTrainSubsystem.leftEncoder.getRate());
+      System.out.println("Right Rate:" + DriveTrainSubsystem.rightEncoder.getRate());
+      System.out.println("--------");
+      //System.out.println("Left Error: " +  DriveTrainSubsystem.adjustedLeft);
   }
 
   @Override
@@ -106,6 +110,12 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    System.out.println("Left Rate:" + DriveTrainSubsystem.leftEncoder.getRate());
+    System.out.println("Right Rate:" + DriveTrainSubsystem.rightEncoder.getRate());
+    System.out.println("--------");
+    System.out.println("Left Dist:" + DriveTrainSubsystem.leftEncoder.getDistance());
+    System.out.println("Right Dist:" + DriveTrainSubsystem.rightEncoder.getDistance());
+    System.out.println("--------");
     
   }
 
