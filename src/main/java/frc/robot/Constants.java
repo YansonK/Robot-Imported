@@ -30,17 +30,19 @@ public final class Constants {
 
     public static class CAN {
         //Drive train motors
-        public static final int DRIVE_VICTOR_R = 12; // Attatched to motor 4
-        public static final int DRIVE_TALON_R = 13; // Attatched to motor 2
-        public static final int DRIVE_VICTOR_L = 14; // Attatched to motor 3
-        public static final int DRIVE_TALON_L = 15; // Attatched to motor 1
+        public static final int DRIVE_VICTOR_R = 3; // Attatched to motor 4
+        public static final int DRIVE_TALON_R = 2; // Attatched to motor 2
+        public static final int DRIVE_VICTOR_L = 0; // Attatched to motor 3
+        public static final int DRIVE_TALON_L = 1; // Attatched to motor 1
 
         //Intake motor
         public static final int INTAKE_SPARK = 4;
 
         //Indexer motors
-        public static final int INDEXER_TALON = 1;
+        public static final int INDEXER_TALON = 13;
         public static final int INDEXER_VICTOR = 0;
+
+        public static final int SHOOTER_SPARK = 5;
 
         //IF YOU CHANGE THESE PORTS ALSO CHANGE THEIR ID IN THEIR RESPECTIVE SOFTWARE MANAGERS
         //TALONS/VICTORS USE PHOENIX TUNER

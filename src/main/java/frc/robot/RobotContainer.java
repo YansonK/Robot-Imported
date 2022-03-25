@@ -82,7 +82,7 @@ public class RobotContainer {
                 new SequentialCommandGroup(
                   new WaitCommand(1),
                   IndexerCommand.teleIndex(indexerSubsystem, 2))
-              ),DriveStraightCommand.teleDrive(1,3));
+              ), DriveStraightCommand.teleDrive(1,3));
 
   }
 }
